@@ -1,10 +1,21 @@
 <html>
 <head>
 	<meta charset="utf-8"/>
-	<title>Kakao 지도 시작하기</title>
+    <title>Kakao 지도 시작하기</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<div id="map" style="width:100vw;height:100vh;"></div>
+    <div id="map" style="width:80vw;height:100vh;"></div>
+    <div id="list"><table>
+    <thead>
+        <th>좌표</th>
+        <th>온도</th>
+    </thead>
+    <tbody id="my-tbody"></tbody>
+        <th>33.450705, 126.570677</th>
+        <th>15</th>
+    </table>
+    </div>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d40a69ba6b3dd096b044e4da3e0b45e6"></script>
 	<script>
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
