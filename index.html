@@ -27,7 +27,7 @@
     </div>
 
     </div>
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d40a69ba6b3dd096b044e4da3e0b45e6"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d40a69ba6b3dd096b044e4da3e0b45e6&libraries=services"></script>
 	<script>
         var table = document.getElementById('tb-body')
         var request = new XMLHttpRequest();
@@ -43,6 +43,7 @@
 
         var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
         
+        var geocoder = new kakao.maps.services.Geocoder(); // 주소-좌표 변환 객체를 생성합니다
 
         // 마커 이미지의 이미지 주소입니다
         var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
@@ -52,72 +53,51 @@
         const markerWidth = 30;
         const markerHeight = 55;
 
-        var imageSrc_00 = './marker/00.png', // 마커이미지의 주소입니다    
+        var imageSrc_00 = './marker/icon-p00.svg', // 마커이미지의 주소입니다    
             imageSize_00 = new kakao.maps.Size(markerWidth, markerHeight), // 마커이미지의 크기입니다
             imageOption_00 = {offset: new kakao.maps.Point(100, 100)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
-        var imageSrc_01 = './marker/01.png', // 마커이미지의 주소입니다    
+        var imageSrc_01 = './marker/icon-p01.svg', // 마커이미지의 주소입니다    
             imageSize_01 = new kakao.maps.Size(markerWidth, markerHeight), // 마커이미지의 크기입니다
             imageOption_01 = {offset: new kakao.maps.Point(100, 100)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
             
-        var imageSrc_02 = './marker/02.png', // 마커이미지의 주소입니다    
+        var imageSrc_02 = './marker/icon-p02.svg', // 마커이미지의 주소입니다    
             imageSize_02 = new kakao.maps.Size(markerWidth, markerHeight), // 마커이미지의 크기입니다
             imageOption_02 = {offset: new kakao.maps.Point(100, 100)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
-        var imageSrc_03 = './marker/03.png', // 마커이미지의 주소입니다    
+        var imageSrc_03 = './marker/icon-p03.svg', // 마커이미지의 주소입니다    
             imageSize_03 = new kakao.maps.Size(markerWidth, markerHeight), // 마커이미지의 크기입니다
             imageOption_03 = {offset: new kakao.maps.Point(100, 100)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
-        var imageSrc_04 = './marker/04.png', // 마커이미지의 주소입니다    
+        var imageSrc_04 = './marker/icon-p04.svg', // 마커이미지의 주소입니다    
             imageSize_04 = new kakao.maps.Size(markerWidth, markerHeight), // 마커이미지의 크기입니다
             imageOption_04 = {offset: new kakao.maps.Point(100, 100)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
-        var imageSrc_05 = './marker/05.png', // 마커이미지의 주소입니다    
+        var imageSrc_05 = './marker/icon-p05.svg', // 마커이미지의 주소입니다    
             imageSize_05 = new kakao.maps.Size(markerWidth, markerHeight), // 마커이미지의 크기입니다
             imageOption_05 = {offset: new kakao.maps.Point(100, 100)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
             
 
         for (var i = 0; i < temperatureData.length; i ++) {
-            
-            // 마커 이미지의 이미지 크기 입니다
-            var imageSize = new kakao.maps.Size(24, 35); 
-            
-            // 마커 이미지를 생성합니다    
-            // var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption); 
-            if (temperatureData[i].number == 0){
-                var markerImage = new kakao.maps.MarkerImage(imageSrc_00, imageSize_00, imageSize_00); 
-            }
-            else if (temperatureData[i].number >= 1 && temperatureData[i].number < 5){
-                var markerImage = new kakao.maps.MarkerImage(imageSrc_01, imageSize_01, imageSize_01); 
-            }
-            else if (temperatureData[i].number >= 5 && temperatureData[i].number < 10){
-                var markerImage = new kakao.maps.MarkerImage(imageSrc_02, imageSize_02, imageSize_02); 
-            }
-            else if (temperatureData[i].number >= 10 && temperatureData[i].number < 50){
-                var markerImage = new kakao.maps.MarkerImage(imageSrc_03, imageSize_03, imageSize_03); 
-            }
-            else if (temperatureData[i].number >= 50 && temperatureData[i].number < 100){
-                var markerImage = new kakao.maps.MarkerImage(imageSrc_04, imageSize_04, imageSize_04); 
-            }
-            else if (temperatureData[i].number >= 100){
-                var markerImage = new kakao.maps.MarkerImage(imageSrc_05, imageSize_05, imageSize_05); 
-            }
-            
-            // 마커를 생성합니다
-            var marker = new kakao.maps.Marker({
-                map: map, // 마커를 표시할 지도
-                position: new kakao.maps.LatLng(temperatureData[i].lat, temperatureData[i].lng), // 마커를 표시할 위치
-                title : temperatureData[i].number, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-                image : markerImage // 마커 이미지 
-            });
 
-            var row = `<tr>
-                            <td>${(i+1)}</td>
-                            <td>${temperatureData[i].lat}, ${temperatureData[i].lng}</td>
-                            <td>${temperatureData[i].number}</td>
-                        </tr>`
-            table.innerHTML += row
+            geocoder.coord2Address(temperatureData[i].lng, temperatureData[i].lat, function(result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    console.log(result);
+                    var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
+                    detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
+                    
+                    var content = '<div class="bAddr">' +
+                                    '<span class="title">도로명 주소정보</span>' + 
+                                    detailAddr + 
+                                '</div>';
+                                            // 마커를 클릭한 위치에 표시합니다 
+                    // marker.setPosition(mouseEvent.latLng);
+                    // marker.setMap(map);
 
+                    // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
+                }   
+            }); 
+            drawMarker(temperatureData[i]);
         }
 	</script>
 </body>
