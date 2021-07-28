@@ -1,3 +1,10 @@
+// $(".close").click(function(){
+//     console.log("close");
+//     // $('.outside').toggleClass('in');
+//     // $('.bar').toggleClass('active');
+//     // $(this).toggleClass('is-showing');
+// });
+
 function drawMarker(i){
 
     // 마커 이미지의 이미지 크기 입니다
@@ -36,7 +43,7 @@ function drawMarker(i){
                     <td>${i.lat}, ${i.lng}</td>
                     <td>${i.number}</td>
                 </tr>`
-    table.innerHTML += row
+    // table.innerHTML += row
 
     // 마커에 커서가 오버됐을 때 마커 위에 표시할 인포윈도우를 생성합니다
     // var iwContent = '<div style="padding:5px;">Hello World!</div>'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
@@ -51,7 +58,6 @@ function drawMarker(i){
         // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
         geocoder.coord2Address(i.lng, i.lat, function(result, status) {
             if (status === kakao.maps.services.Status.OK) {
-                console.log(result);
                 var detailAddr = !!result[0].road_address ? '<div>도로명 주소 : ' + result[0].road_address.address_name + '</div>' : '';
                 detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
                 
@@ -87,3 +93,9 @@ function searchDetailAddrFromCoords(coords, callback) {
     // 좌표로 법정동 상세 주소 정보를 요청합니다
     geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
 }
+
+
+$("#close").on("click", function(){
+
+console.log("Test");
+});

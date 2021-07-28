@@ -1,32 +1,51 @@
 <html>
 <head>
 	<meta charset="utf-8"/>
-    <title>Kakao 지도 시작하기</title>
+    <title>Kakao 지도 API TEST 시작하기</title>
     <script src="script.js"></script>
+    <script src="https://kit.fontawesome.com/ce3d8c1ebd.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
-    <div id="map" style="width:80vw;height:100vh;"></div>
-    <div id="list">
-    <table>
-        <thead>
-            <th>순번</th>
-            <th>좌표</th>
-            <th>인원</th>
-        </thead>
-        <tbody id="tb-body">
-        </tbody>
-    </table>
+    <script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
 
 
-    <div id=input-box>
-        <input type="text" size=6 placeholder="위도" class="input-data">
-        <input type="text" size=6 placeholder="경도" class="input-data">
-        <input type="text" size=4 placeholder="인원" class="input-data">
-        <input type="button" value="입력">
+    <div id="map" style="width:100vw;height:100vh;">
+        <button id="close">
+            <span class="bar"></span>
+        </button>
+        <div class="outside"> 
+            <div class="inside">
+                <!-- <ul class="menu">
+                            <table>
+                                <thead>
+                                    <th>순번</th>
+                                    <th>좌표</th>
+                                    <th>인원</th>
+                                </thead>
+                                <tbody id="tb-body">
+                                </tbody>
+                            </table>
+                </ul>
+                <div id=input-box>
+                    <input type="text" size=6 placeholder="위도" class="input-data">
+                    <input type="text" size=6 placeholder="경도" class="input-data">
+                    <input type="text" size=4 placeholder="인원" class="input-data">
+                    <input type="button" value="입력">
+                </div> -->
+                <ul class="menu">
+                    <li><span class="fa fa-dashboard"></span> Home</li>
+                    <li><span class="fa fa-shopping-basket"></span> Shop</li>
+                    <li><span class="fa fa-shopping-cart"></span> Cart</li>
+                    <li><span class="fa fa-info-circle"></span> Info</li>
+                    <li><span class="fa fa-credit-card"></span> Payments</li>
+                    <li><span class="fa fa-leaf"></span> Support</li>
+                </ul>
+            </div>
+        </div>
     </div>
 
-    </div>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d40a69ba6b3dd096b044e4da3e0b45e6&libraries=services"></script>
 	<script>
         var table = document.getElementById('tb-body')
@@ -50,8 +69,8 @@
             imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
             imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
-        const markerWidth = 30;
-        const markerHeight = 55;
+        const markerWidth = 64;
+        const markerHeight = 64;
 
         var imageSrc_00 = './marker/icon-p00.svg', // 마커이미지의 주소입니다    
             imageSize_00 = new kakao.maps.Size(markerWidth, markerHeight), // 마커이미지의 크기입니다
