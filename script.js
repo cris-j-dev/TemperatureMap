@@ -44,32 +44,30 @@ function drawMarker(i){
 
     // 인포윈도우를 생성합니다
     var infowindow = new kakao.maps.InfoWindow({
-        content : iwContent
+        zindex:1
     });
 
-    kakao.maps.event.addListener(marker, 'mouseover', function() {
-        infowindow.setContent(i);
-        infowindow.open(map, marker);
-        // // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
-        // geocoder.coord2Address(i.lng, i.lat, function(result, status) {
-        //     if (status === kakao.maps.services.Status.OK) {
-        //         console.log(result);
-        //         var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
-        //         detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
+    kakao.maps.event.addListener(marker, 'click', function() {
+        // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
+        geocoder.coord2Address(i.lng, i.lat, function(result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+                console.log(result);
+                var detailAddr = !!result[0].road_address ? '<div>도로명 주소 : ' + result[0].road_address.address_name + '</div>' : '';
+                detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
                 
-        //         var content = '<div class="bAddr">' +
-        //                         '<span class="title">도로명 주소정보</span>' + 
-        //                         detailAddr + 
-        //                     '</div>';
-        //                                 // 마커를 클릭한 위치에 표시합니다 
-        //         // marker.setPosition(mouseEvent.latLng);
-        //         // marker.setMap(map);
+                var content = '<div class="bAddr">' +
+                                '<span class="title">주소정보</span>' + 
+                                detailAddr + 
+                            '</div>';
+                                        // 마커를 클릭한 위치에 표시합니다 
+                // marker.setPosition(mouseEvent.latLng);
+                // marker.setMap(map);
 
-        //         // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
-        //         infowindow.setContent(content);
-        //         infowindow.open(map, marker);
-        //     }   
-        // }); 
+                // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
+                infowindow.setContent(content);
+                infowindow.open(map, marker);
+            }   
+        }); 
     });
 
     // 마커에 마우스아웃 이벤트를 등록합니다
