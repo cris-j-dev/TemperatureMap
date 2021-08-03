@@ -17,7 +17,7 @@
         </button>
         <div class="outside"> 
             <div class="inside">
-                <!-- <ul class="menu">
+                <ul class="menu">
                             <table>
                                 <thead>
                                     <th>순번</th>
@@ -33,7 +33,7 @@
                     <input type="text" size=6 placeholder="경도" class="input-data">
                     <input type="text" size=4 placeholder="인원" class="input-data">
                     <input type="button" value="입력">
-                </div> -->
+                </div>
                 <ul class="menu">
                     <li><span class="fa fa-dashboard"></span> Home</li>
                     <li><span class="fa fa-shopping-basket"></span> Shop</li>
@@ -101,6 +101,18 @@
 
             drawMarker(temperatureData[i]);
         }
+
+        var temp = document.getElementById('close');
+        temp.onclick = function() {
+            alert(temp);
+        }
+        // $(".close").click(function(){
+        //     console.log("close");
+        //     // $('.outside').toggleClass('in');
+        //     // $('.bar').toggleClass('active');
+        //     // $(this).toggleClass('is-showing');
+        // });;
+
 	</script>
 </body>
 </html>

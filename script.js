@@ -4,7 +4,6 @@
 //     // $('.bar').toggleClass('active');
 //     // $(this).toggleClass('is-showing');
 // });
-
 function drawMarker(i){
 
     // 마커 이미지의 이미지 크기 입니다
@@ -94,8 +93,3 @@ function searchDetailAddrFromCoords(coords, callback) {
     geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
 }
 
-
-$("#close").on("click", function(){
-
-console.log("Test");
-});
