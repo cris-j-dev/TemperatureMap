@@ -1,106 +1,187 @@
+<!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8"/>
-    <title>Kakao 지도 API TEST 시작하기</title>
-    <script src="script.js"></script>
-    <script src="https://kit.fontawesome.com/ce3d8c1ebd.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="style.css">
 
-</head>
-<body>
-    <script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
+    <head>
+        <meta charset="utf-8">
+        <title>마커 클러스터러 사용하기</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <!-- <link rel="stylesheet" href="style.css"> -->
 
+    </head>
 
-    <div id="map" style="width:100vw;height:100vh;">
-        <button id="close">
-            <span class="bar"></span>
-        </button>
-        <div class="outside"> 
-            <div class="inside">
-                <!-- <ul class="menu">
-                            <table>
-                                <thead>
-                                    <th>순번</th>
-                                    <th>좌표</th>
-                                    <th>인원</th>
-                                </thead>
-                                <tbody id="tb-body">
-                                </tbody>
-                            </table>
-                </ul>
-                <div id=input-box>
-                    <input type="text" size=6 placeholder="위도" class="input-data">
-                    <input type="text" size=6 placeholder="경도" class="input-data">
-                    <input type="text" size=4 placeholder="인원" class="input-data">
-                    <input type="button" value="입력">
-                </div> -->
-                <ul class="menu">
-                    <li><span class="fa fa-dashboard"></span> Home</li>
-                    <li><span class="fa fa-shopping-basket"></span> Shop</li>
-                    <li><span class="fa fa-shopping-cart"></span> Cart</li>
-                    <li><span class="fa fa-info-circle"></span> Info</li>
-                    <li><span class="fa fa-credit-card"></span> Payments</li>
-                    <li><span class="fa fa-leaf"></span> Support</li>
-                </ul>
-            </div>
+    <body>
+        <div id="map" style="width:100vw;height:100vh;">
         </div>
-    </div>
+        <script type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d40a69ba6b3dd096b044e4da3e0b45e6&libraries=clusterer">
+        </script>
+        <script>
+            var map = new kakao.maps.Map(document.getElementById('map'), { // 지도를 표시할 div
+                center: new kakao.maps.LatLng(37.414154, 127.128777), // 지도의 중심좌표
+                level: 4 // 지도의 확대 레벨
+            });
 
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d40a69ba6b3dd096b044e4da3e0b45e6&libraries=services"></script>
-	<script>
-        var table = document.getElementById('tb-body')
-        var request = new XMLHttpRequest();
-        request.open("GET", "dataset.json", false);
-        request.send(null)
-        var temperatureData = JSON.parse(request.responseText);
+            // 마커 클러스터러를 생성합니다 
+            var clusterer = new kakao.maps.MarkerClusterer({
+                map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
+                averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
+                // texts: getTexts,
+                minLevel: 6 // 클러스터 할 최소 지도 레벨 
+            });
 
-        var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
-        mapOption = { 
-            center: new kakao.maps.LatLng(37.414154, 127.128777), // 지도의 중심좌표
-            level: 4 // 지도의 확대 레벨
-        };
 
-        var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-        
-        var geocoder = new kakao.maps.services.Geocoder(); // 주소-좌표 변환 객체를 생성합니다
+            var json = (function () {
+                var json = null;
+                $.ajax({
+                    'async': false,
+                    'global': false,
+                    'url': "/dataset.json",
+                    'dataType': "json",
+                    'success': function (data) {
+                        json = data;
+                    }
+                });
+                return json;
+            })();
+            console.log(json)
 
-        // 마커 이미지의 이미지 주소입니다
-        var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
-            imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
-            imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
-        const markerWidth = 64;
-        const markerHeight = 64;
+            // function getTexts(count) {
 
-        var imageSrc_00 = './marker/icon-p00.svg', // 마커이미지의 주소입니다    
-            imageSize_00 = new kakao.maps.Size(markerWidth, markerHeight), // 마커이미지의 크기입니다
-            imageOption_00 = {offset: new kakao.maps.Point(100, 100)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+            //     // 한 클러스터 객체가 포함하는 마커의 개수에 따라 다른 텍스트 값을 표시합니다 
+            //     if (count < 10) {
+            //         return '삐약';
+            //     } else if (count < 30) {
+            //         return '꼬꼬';
+            //     } else if (count < 50) {
+            //         return '꼬끼오';
+            //     } else {
+            //         return '치멘';
+            //     }
+            // }
 
-        var imageSrc_01 = './marker/icon-p01.svg', // 마커이미지의 주소입니다    
-            imageSize_01 = new kakao.maps.Size(markerWidth, markerHeight), // 마커이미지의 크기입니다
-            imageOption_01 = {offset: new kakao.maps.Point(100, 100)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
-            
-        var imageSrc_02 = './marker/icon-p02.svg', // 마커이미지의 주소입니다    
-            imageSize_02 = new kakao.maps.Size(markerWidth, markerHeight), // 마커이미지의 크기입니다
-            imageOption_02 = {offset: new kakao.maps.Point(100, 100)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+            const markerWidth = 50;
+            const markerHeight = 50;
 
-        var imageSrc_03 = './marker/icon-p03.svg', // 마커이미지의 주소입니다    
-            imageSize_03 = new kakao.maps.Size(markerWidth, markerHeight), // 마커이미지의 크기입니다
-            imageOption_03 = {offset: new kakao.maps.Point(100, 100)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+            var imageSrc_00 = './marker/icon-p00.svg', // 마커이미지의 주소입니다    
+                imageSize_00 = new kakao.maps.Size(markerWidth, markerHeight), // 마커이미지의 크기입니다
+                imageOption_00 = {
+                    offset: new kakao.maps.Point(100, 100)
+                }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
-        var imageSrc_04 = './marker/icon-p04.svg', // 마커이미지의 주소입니다    
-            imageSize_04 = new kakao.maps.Size(markerWidth, markerHeight), // 마커이미지의 크기입니다
-            imageOption_04 = {offset: new kakao.maps.Point(100, 100)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+            var imageSrc_01 = './marker/icon-p01.svg', // 마커이미지의 주소입니다    
+                imageSize_01 = new kakao.maps.Size(markerWidth, markerHeight), // 마커이미지의 크기입니다
+                imageOption_01 = {
+                    offset: new kakao.maps.Point(100, 100)
+                }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
-        var imageSrc_05 = './marker/icon-p05.svg', // 마커이미지의 주소입니다    
-            imageSize_05 = new kakao.maps.Size(markerWidth, markerHeight), // 마커이미지의 크기입니다
-            imageOption_05 = {offset: new kakao.maps.Point(100, 100)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
-            
+            var imageSrc_02 = './marker/icon-p02.svg', // 마커이미지의 주소입니다    
+                imageSize_02 = new kakao.maps.Size(markerWidth, markerHeight), // 마커이미지의 크기입니다
+                imageOption_02 = {
+                    offset: new kakao.maps.Point(100, 100)
+                }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
-        for (var i = 0; i < temperatureData.length; i ++) {
+            var imageSrc_03 = './marker/icon-p03.svg', // 마커이미지의 주소입니다    
+                imageSize_03 = new kakao.maps.Size(markerWidth, markerHeight), // 마커이미지의 크기입니다
+                imageOption_03 = {
+                    offset: new kakao.maps.Point(100, 100)
+                }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
-            drawMarker(temperatureData[i]);
-        }
-	</script>
-</body>
+            var imageSrc_04 = './marker/icon-p04.svg', // 마커이미지의 주소입니다    
+                imageSize_04 = new kakao.maps.Size(markerWidth, markerHeight), // 마커이미지의 크기입니다
+                imageOption_04 = {
+                    offset: new kakao.maps.Point(100, 100)
+                }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+            var imageSrc_05 = './marker/icon-p05.svg', // 마커이미지의 주소입니다    
+                imageSize_05 = new kakao.maps.Size(markerWidth, markerHeight), // 마커이미지의 크기입니다
+                imageOption_05 = {
+                    offset: new kakao.maps.Point(100, 100)
+                }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+            // 데이터를 가져오기 위해 jQuery를 사용합니다
+            // 데이터를 가져와 마커를 생성하고 클러스터러 객체에 넘겨줍니다
+            // 데이터에서 좌표 값을 가지고 마커를 표시합니다
+            // 마커 클러스터러로 관리할 마커 객체는 생성할 때 지도 객체를 설정하지 않습니다
+            // 마커 이미지의 이미지 크기 입니다
+            var imageSize = new kakao.maps.Size(24, 24);
+
+            var markers = [];
+            // 마커 이미지를 생성합니다    
+
+            $(json.positions).map(function (i, position) {
+                console.log(position.number)
+                if (position.number == 0) {
+                    var markerImage = new kakao.maps.MarkerImage(imageSrc_00, imageSize_00,
+                        imageSize_00);
+                } else if (position.number >= 1 && position.number < 5) {
+                    var markerImage = new kakao.maps.MarkerImage(imageSrc_01, imageSize_01,
+                        imageSize_01);
+                } else if (position.number >= 5 && position.number < 10) {
+                    var markerImage = new kakao.maps.MarkerImage(imageSrc_02, imageSize_02,
+                        imageSize_02);
+                } else if (position.number >= 10 && position.number < 50) {
+                    var markerImage = new kakao.maps.MarkerImage(imageSrc_03, imageSize_03,
+                        imageSize_03);
+                } else if (position.number >= 50 && position.number < 100) {
+                    var markerImage = new kakao.maps.MarkerImage(imageSrc_04, imageSize_04,
+                        imageSize_04);
+                } else if (position.number >= 100) {
+                    var markerImage = new kakao.maps.MarkerImage(imageSrc_05, imageSize_05,
+                        imageSize_05);
+                }
+                var marker = new kakao.maps.Marker({
+                    position: new kakao.maps.LatLng(position.lat, position.lng),
+                    title: parseInt(position.number), // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+                    image: markerImage // 마커 이미지 
+                });
+                markers.push(marker);
+            });
+
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(map);
+            }
+
+            bounds = map.getBounds();
+
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(map);
+
+                var pos = markers[i].getPosition();
+                console.log(pos)
+                // bounds.contain(pos); // true or false
+                console.log(bounds.contain(pos))
+            }
+
+            kakao.maps.event.addListener(clusterer, 'clustered', function (clusters) {
+                clusters.forEach(cluster => {
+                    var sum = 0
+                    // console.log(cluster)
+                    // 클러스터러에 포함된 마커 배열을 가져옵니다.
+                    cluster.getMarkers().forEach(marker => {
+                        console.log(marker.Gb)
+                        sum += Number(marker.Gb)
+                    });
+                    console.log(sum) // 마커 생성시 적용한 temp 값 출력
+
+                    // 클러스터러 오버레이의 콘텐츠 내부 텍스트 변경해주세요.
+                    cluster.getClusterMarker().getContent().innerText = sum
+                    console.log(cluster.getClusterMarker())
+                    var content =
+                        "<div style='cursor: pointer; width: 52px; height: 52px; border-radius: 52px; border: 1px solid #1a86ae; background-color:white; line-height: 52px; font-size: 14px; text-align: center; font-weight: bold;'>" +
+                        cluster.getSize() + "</div>";
+                    // cluster.getClusterMarker().setContent(content);
+                    console.log(cluster.getClusterMarker().setContent())
+
+
+                    // if (sum > 1){
+                    // }
+                });
+            });
+
+            // 클러스터러에 마커들을 추가합니다
+            clusterer.addMarkers(markers);
+        </script>
+    </body>
+
 </html>

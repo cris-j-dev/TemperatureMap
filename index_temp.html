@@ -1,0 +1,124 @@
+<html>
+
+    <head>
+        <meta charset="utf-8" />
+        <title>Kakao 지도 API TEST 시작하기</title>
+        <script src="script.js"></script>
+        <script src="https://kit.fontawesome.com/ce3d8c1ebd.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="style.css">
+
+    </head>
+
+    <body>
+        <script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
+
+
+        <div id="map" style="width:100vw;height:100vh;">
+            <button id="close">
+                <span class="bar"></span>
+            </button>
+            <div class="outside">
+                <div class="inside">
+                    <!-- <ul class="menu">
+                            <table>
+                                <thead>
+                                    <th>순번</th>
+                                    <th>좌표</th>
+                                    <th>인원</th>
+                                </thead>
+                                <tbody id="tb-body">
+                                </tbody>
+                            </table>
+                </ul>
+                <div id=input-box>
+                    <input type="text" size=6 placeholder="위도" class="input-data">
+                    <input type="text" size=6 placeholder="경도" class="input-data">
+                    <input type="text" size=4 placeholder="인원" class="input-data">
+                    <input type="button" value="입력">
+                </div> -->
+                    <ul class="menu">
+                        <li><span class="fa fa-dashboard"></span> Home</li>
+                        <li><span class="fa fa-shopping-basket"></span> Shop</li>
+                        <li><span class="fa fa-shopping-cart"></span> Cart</li>
+                        <li><span class="fa fa-info-circle"></span> Info</li>
+                        <li><span class="fa fa-credit-card"></span> Payments</li>
+                        <li><span class="fa fa-leaf"></span> Support</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d40a69ba6b3dd096b044e4da3e0b45e6">
+        </script>
+        <script>
+            var table = document.getElementById('tb-body')
+            var request = new XMLHttpRequest();
+            request.open("GET", "dataset.json", false);
+            request.send(null)
+            var temperatureData = JSON.parse(request.responseText);
+
+            var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
+                mapOption = {
+                    center: new kakao.maps.LatLng(37.414154, 127.128777), // 지도의 중심좌표
+                    level: 4 // 지도의 확대 레벨
+                };
+
+            var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+            var geocoder = new kakao.maps.services.Geocoder(); // 주소-좌표 변환 객체를 생성합니다
+
+            // 마커 이미지의 이미지 주소입니다
+            var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+            imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
+                imageOption = {
+                    offset: new kakao.maps.Point(27, 69)
+                }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+            const markerWidth = 64;
+            const markerHeight = 64;
+
+            var imageSrc_00 = './marker/icon-p00.svg', // 마커이미지의 주소입니다    
+                imageSize_00 = new kakao.maps.Size(markerWidth, markerHeight), // 마커이미지의 크기입니다
+                imageOption_00 = {
+                    offset: new kakao.maps.Point(100, 100)
+                }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+            var imageSrc_01 = './marker/icon-p01.svg', // 마커이미지의 주소입니다    
+                imageSize_01 = new kakao.maps.Size(markerWidth, markerHeight), // 마커이미지의 크기입니다
+                imageOption_01 = {
+                    offset: new kakao.maps.Point(100, 100)
+                }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+            var imageSrc_02 = './marker/icon-p02.svg', // 마커이미지의 주소입니다    
+                imageSize_02 = new kakao.maps.Size(markerWidth, markerHeight), // 마커이미지의 크기입니다
+                imageOption_02 = {
+                    offset: new kakao.maps.Point(100, 100)
+                }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+            var imageSrc_03 = './marker/icon-p03.svg', // 마커이미지의 주소입니다    
+                imageSize_03 = new kakao.maps.Size(markerWidth, markerHeight), // 마커이미지의 크기입니다
+                imageOption_03 = {
+                    offset: new kakao.maps.Point(100, 100)
+                }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+            var imageSrc_04 = './marker/icon-p04.svg', // 마커이미지의 주소입니다    
+                imageSize_04 = new kakao.maps.Size(markerWidth, markerHeight), // 마커이미지의 크기입니다
+                imageOption_04 = {
+                    offset: new kakao.maps.Point(100, 100)
+                }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+            var imageSrc_05 = './marker/icon-p05.svg', // 마커이미지의 주소입니다    
+                imageSize_05 = new kakao.maps.Size(markerWidth, markerHeight), // 마커이미지의 크기입니다
+                imageOption_05 = {
+                    offset: new kakao.maps.Point(100, 100)
+                }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+
+            for (var i = 0; i < temperatureData.length; i++) {
+
+                drawMarker(temperatureData[i]);
+            }
+        </script>
+    </body>
+
+</html>
