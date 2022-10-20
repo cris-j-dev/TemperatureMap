@@ -71,9 +71,6 @@
                     return json;
                 })();
 
-
-                displayPlaces();
-
                 var callback = function (result, status) {
                     if (status === kakao.maps.services.Status.OK) {
                         return result
@@ -100,8 +97,29 @@
                     zIndex: 1
                 });
 
+                bounds = map.getBounds();
+                kakao.maps.event.addListener(map, 'idle', function () {
+                    // 검색 결과 목록에 추가된 항목들을 제거합니다
+                    bounds = map.getBounds();
+                    var obj_keys = Object.keys(json.positions);
+                    var data = [];
+                    for (var i = 0; i < obj_keys.length; i++) {
+                        var info = json.positions[obj_keys[i]];
+                        var gps_position = {}
+                        var placePosition = new kakao.maps.LatLng(info.lat, info.lng);
+                        if (bounds.contain(placePosition)) // true or false
+                        {
+                            data.push(info);
+                        }
+                    }
+                    console.log(data);
+                    displayPlaces(data);
+                });
+
                 // 검색 결과 목록과 마커를 표출하는 함수입니다
-                function displayPlaces() {
+                function displayPlaces(info) {
+                    console.log("info : ", info);
+
 
                     var listEl = document.getElementById('placesList'),
                         menuEl = document.getElementById('menu_wrap'),
@@ -110,55 +128,52 @@
                         listStr = '';
 
                     // 지도에 표시되고 있는 마커를 제거합니다
+                    clusterer.removeMarkers(markers);
+                    removeAllChildNods(listEl);
+                    removeMarker();
+                    var itemEl = setListHeader();
+                    fragment.appendChild(itemEl);
+                    // bounds = map.getBounds();
+                    for (var i = 0; i < info.length; i++) {
+                        var placePosition = new kakao.maps.LatLng(info[i].lat, info[i].lng);
+                        var marker = addMarker(placePosition, i, info[i]);
+                        itemEl = getListItem(info[i]); // 검색 결과 항목 Element를 생성합니다
 
-                    var data = [];
-                    var obj_keys = Object.keys(json.positions);
-                    bounds = map.getBounds();
-                    kakao.maps.event.addListener(map, 'idle', function () {
-                        // 검색 결과 목록에 추가된 항목들을 제거합니다
-                        removeAllChildNods(listEl);
-                        removeMarker();
-                        var itemEl = setListHeader();
+                        (function (marker, title) {
+                            kakao.maps.event.addListener(marker, 'mouseover', function () {
+                                displayInfowindow(marker, title);
+                            });
+
+                            kakao.maps.event.addListener(marker, 'mouseout', function () {
+                                infowindow.close();
+                            });
+
+                            itemEl.onmouseover = function () {
+                                displayInfowindow(marker, title);
+                            };
+
+                            itemEl.onmouseout = function () {
+                                infowindow.close();
+                            };
+                        })(marker, info[i]);
                         fragment.appendChild(itemEl);
-                        data = [];
-                        bounds = map.getBounds();
-                        var index = Object.keys(json.positions);
-                        for (var i = 0; i < obj_keys.length; i++) {
-                            var info = json.positions[index[i]];
-                            var temp = {}
-                            var gps_position = {}
-                            var placePosition = new kakao.maps.LatLng(info.lat, info.lng);
-                            if (bounds.contain(placePosition)) // true or false
-                            {
-                                var marker = addMarker(placePosition, i, info);
-                                itemEl = getListItem(info); // 검색 결과 항목 Element를 생성합니다
+                    }
+                    listEl.appendChild(fragment);
+                    menuEl.scrollTop = 0;
+                    console.log("a markers : ", markers);
+                    clusterer.addMarkers(markers);
 
-                                (function (marker, title) {
-                                    kakao.maps.event.addListener(marker, 'mouseover', function () {
-                                        displayInfowindow(marker, title);
-                                    });
+                    ////////////////////////////////////////////////
+                    // for (var i = 0; i< clusterer._clusterer.length; i++){
+                    //     if(clusterer._clusterer[i]._markers.length > 1)
 
-                                    kakao.maps.event.addListener(marker, 'mouseout', function () {
-                                        infowindow.close();
-                                    });
+                    // }
 
-                                    itemEl.onmouseover = function () {
-                                        displayInfowindow(marker, title);
-                                    };
 
-                                    itemEl.onmouseout = function () {
-                                        infowindow.close();
-                                    };
-                                })(marker, info);
-                                fragment.appendChild(itemEl);
-                            }
-                        }
-                        listEl.appendChild(fragment);
-                        menuEl.scrollTop = 0;
-                    });
+
+
                 }
-                console.log("a markers : ", markers);
-                clusterer.addMarkers(markers);
+
 
                 kakao.maps.event.addListener(clusterer, 'clusterclick', function (cluster) {
 
