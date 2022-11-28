@@ -649,15 +649,15 @@ ul.menu {
   bottom: 0;
   width: 280px;
   height: 50px;
-  margin: 70px 0 0px 10px;
+  margin: 120px 0 0px 10px;
   padding: 5px;
   overflow-y: auto;
   /* background: rgba(200, 200, 200, 1); */
-  background: rgba(255, 255, 255, 1);
+  background: rgba(255, 255, 255, 0.8);
   z-index: 1;
   border-radius: 10px;
   border-color: rgba(255, 255, 255, 0);
-  border: 2pt solid red;
+  border: 2pt solid gainsboro;
 }
 #recommand .item {
   position: relative;
@@ -676,23 +676,36 @@ ul.menu {
   left: 0;
   bottom: 0;
   width: 280px;
-  height: 50px;
+  height: 100px;
   margin: 0px 0px 0px 10px;
   padding: 5px;
   overflow-y: auto;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.8);
   z-index: 1;
   border-radius: 10px;
-  border: 2pt solid red;
+  border: 2pt solid gainsboro;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#input_box{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+input[type='submit']{
+  width: 100px;
 }
 input[type='number']{
-  width: 80px;
+  width: 122px;
   padding: 2px;
+  margin-bottom: 2px;
 }
 select{
   width: 130px;
   padding: 2px;
+  margin-bottom: 2px;
 }
 
 #menu_wrap {
@@ -701,7 +714,7 @@ select{
   left: 0;
   bottom: 0;
   width: 280px;
-  margin: 150px 0px 0px 10px;
+  margin: 200px 0px 0px 10px;
   padding: 5px;
   overflow-y: auto;
   /* background: rgba(200, 200, 200, 1); */
@@ -709,7 +722,7 @@ select{
   z-index: 1;
   font-size: 12px;
   border-radius: 10px;
-  border: 2pt solid red;
+  border: 2pt solid gainsboro;
 }
 .bg_white {
   background: #fff;
